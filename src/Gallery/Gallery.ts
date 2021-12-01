@@ -8,8 +8,8 @@ export default class Gallery {
   private view: View;
 
   private keyPressedMap: any = {
-    KeyL: "left",
-    KeyH: "right"
+    KeyH: "left",
+    KeyL: "right"
   };
 
   public constructor(elementId: string) {
@@ -41,7 +41,7 @@ export default class Gallery {
     this.view.on("selected", (target) => {
       const length = target - this.model.cursor;
       if (length != 0) {
-        const direction: "right" | "left" = length < 0 ? "right" : "left";
+        const direction: "right" | "left" = length > 0 ? "right" : "left";
         const model = {
           cursor: target,
           urls: this.model.urls.slice(0),

@@ -162,7 +162,7 @@ const animations: any = {
     `
   },
   shadow: {
-    right: keyframes`
+    left: keyframes`
     0% {
       transform: translateY(50px) rotateX(-90deg) rotateZ(0deg) scale(0.3);
     }
@@ -170,7 +170,7 @@ const animations: any = {
       transform: translateY(50px) rotateX(-90deg) rotateZ(90deg) scale(0.3);
     }
     `,
-    left: keyframes`
+    right: keyframes`
     0% {
       transform: translateY(50px) rotateX(-90deg) rotateZ(0deg) scale(0.3);
     }
@@ -182,13 +182,13 @@ const animations: any = {
 }
 
 const directionMap: {[direction: string]: {[source: string]: string}} = {
-  "left": {
+  "right": {
     [style.face.front]: style.face.right,
     [style.face.right]: style.face.back,
     [style.face.back]: style.face.left,
     [style.face.left]: style.face.front,
   },
-  "right": {
+  "left": {
     [style.face.front]: style.face.left,
     [style.face.right]: style.face.front,
     [style.face.back]: style.face.right,
