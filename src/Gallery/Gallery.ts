@@ -7,9 +7,15 @@ export default class Gallery {
   private model: Model;
   private view: View;
 
+  private lastTime = Date.now();
+
+  private lastX = 0;
+
   private keyPressedMap: any = {
     KeyH: "left",
-    KeyL: "right"
+    KeyL: "right",
+    '37': "left",
+    '39': "right"
   };
 
   public constructor(elementId: string) {
@@ -30,14 +36,15 @@ export default class Gallery {
   }
 
   public display() {
-    document.addEventListener('keypress', (event) => {
+    document.onkeydown = (event) => {
       const direction = this.keyPressedMap[event.code];
       if (!!direction) {
-        const model = move(this.model, direction);
-        this.view.update(model);
-        this.model = model;
+        this.move(direction);
       }
-    });
+    };
+
+    document.ontouchstart = (event: TouchEvent) => this.lock(this.unifyTouchEvent(event));
+    document.ontouchend = (event: TouchEvent) => this.release(this.unifyTouchEvent(event));
 
     this.view.on("selected", (target) => {
       const length = target - this.model.cursor;
@@ -53,5 +60,31 @@ export default class Gallery {
         this.model = model;
       }
     });
+  }
+
+  private move(direction: "left" | "right") {
+    if ((Date.now() - this.lastTime) < 1000) {
+      return;
+    }
+    this.lastTime = Date.now();
+    const model = move(this.model, direction);
+    this.view.update(model);
+    this.model = model;
+  }
+
+  private unifyTouchEvent(event: TouchEvent | Touch): Touch {
+    return (event as TouchEvent).changedTouches ? (event as TouchEvent).changedTouches[0] as Touch : event as Touch
+  }
+
+  private lock(event: Touch) {
+    this.lastX = event.clientX;
+  }
+
+  private release(event: Touch) {
+    const dx = this.lastX - event.clientX;
+    if (Math.abs(dx) > window.innerWidth/3) {
+      const sign = Math.sign(dx);
+      this.move(dx > 0 ? "right" : "left");
+    }
   }
 }
