@@ -11,7 +11,7 @@ export default class App {
     this.gallery.display();
   }
 
-  public addImage(url: string) {
-    this.gallery.addImage(url);
+  public addImage(url: string, description?: string) {
+    this.gallery.addImage(url, description);
   }
 }

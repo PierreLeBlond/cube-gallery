@@ -13,6 +13,7 @@ export default function move(model: Model, direction: "left" | "right"): Model {
     return {
       cursor,
       urls: model.urls.slice(0),
+      descriptions: model.descriptions.slice(0),
       direction
     }
 }

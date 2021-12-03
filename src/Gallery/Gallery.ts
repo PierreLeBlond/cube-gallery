@@ -15,6 +15,7 @@ export default class Gallery {
   public constructor(elementId: string) {
     this.model = {
       urls: [],
+      descriptions: [],
       cursor: 0,
       direction: "left"
     }
@@ -22,8 +23,8 @@ export default class Gallery {
     this.view = new View(elementId);
   }
 
-  public addImage(url: string) {
-    const model = addImage(this.model, url);
+  public addImage(url: string, description?: string) {
+    const model = addImage(this.model, url, description);
     this.view.update(model);
     this.model = model;
   }
@@ -45,6 +46,7 @@ export default class Gallery {
         const model = {
           cursor: target,
           urls: this.model.urls.slice(0),
+          descriptions: this.model.descriptions.slice(0),
           direction
         };
         this.view.update(model);

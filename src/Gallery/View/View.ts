@@ -4,28 +4,34 @@ import dots from "./dots.gif";
 import { css, keyframes } from "@emotion/css";
 
 const style: any = {
-  base: css({
-    display: 'flex',
-    justifyContent: 'center',
-    position: 'relative',
-    height: '70%',
-    width: '70%',
-    perspective: '100vh',
-    transformStyle: 'preserve-3d',
-  }),
   wrapper: css({
     display: 'flex',
-    flexWrap: 'wrap',
+    flexDirection: 'column',
+    flexWrap: 'nowrap',
     alignItems: 'center',
-    justifyContent: 'center',
     height: '100%',
     width: '100%',
     perspectiveOrigin: '50% 50%',
+    overflowX: 'hidden',
+    paddingTop: '10px'
+  }),
+  cube: css({
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'end',
+    position: 'relative',
+    maxHeight: '70%',
+    width: '70%',
+    aspectRatio: '1',
+    perspective: '100vh',
+    transformStyle: 'preserve-3d',
   }),
   face: {
     common: css({
       position: 'absolute',
       display: 'flex',
+      width: '100%',
+      height: '100%',
       alignItems: 'center',
       justifyContent: 'center',
       transition: 'background-color 1s ease',
@@ -51,25 +57,42 @@ const style: any = {
       backgroundColor: '#444'
     })
   },
-  shadow: css({
-    position: 'absolute',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    transformOrigin: '50% 50% -200px',
-    animationDuration: '1s',
-    transform: 'translateY(50px) rotateX(-90deg) scale(0.3)',
-    boxShadow: '0px 0px 500px 500px black',
-    backgroundColor: 'black'
-  }),
+  shadow: {
+    holder: css({
+      position: 'absolute',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      transformOrigin: '50% 50% -200px',
+      transform: 'translateY(50px) rotateX(-90deg)',
+      preserve3d: true
+    }),
+    item: css({
+      width: '30%',
+      height: '30%',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      transformOrigin: '50% 50% -200px',
+      animationDuration: '1s',
+      // transform: 'translateY(50px) rotateX(-90deg) scale(0.3)',
+      boxShadow: '0px 0px 500px 500px black',
+      backgroundColor: 'black'
+    }),
+    gap: css({
+      height: '50px'
+    })
+    },
   nav: {
     base: css({
       display: 'flex',
       justifyContent: 'center',
+      alignItems: 'center',
       position: 'relative',
       width: '90%',
       listStyleType: 'none',
       padding: '0px',
+      marginBottom: '0%',
       li: {
         textDecoration: 'none',
         paddingLeft: '5px',
@@ -85,99 +108,161 @@ const style: any = {
     selected: css({
       color: '#BB2FED'
     })
+  },
+  description: {
+    holder: css({
+      display: 'flex',
+      position: 'relative',
+      width: '90%',
+      paddingTop: '20px'
+    }),
+    item: css({
+      textAlign: 'center',
+      width: '100%',
+      position: 'absolute',
+      // whiteSpace: 'nowrap',
+      animationDuration: '1s',
+      animationFillMode: 'forwards'
+    })
   }
 }
 
 const animations: any = {
   [style.face.front]: {
     [style.face.left]: keyframes({
-    '0%': {
-      transform: 'rotateY(0deg)'
-    },
-    '100%': {
-      transform: 'rotateY(90deg)'
-    }
+      '0%': {
+        transform: 'rotateY(0deg)'
+      },
+      '100%': {
+        transform: 'rotateY(90deg)'
+      }
     }),
-    [style.face.right]: keyframes`
-    0% {
-      transform: rotateY(0deg);
-    }
-    100% {
-      transform: rotateY(-90deg);
-    }
-    `
+    [style.face.right]: keyframes({
+      '0%': {
+        transform: 'rotateY(0deg)'
+      },
+      '100%': {
+        transform: 'rotateY(-90deg)'
+      }
+    })
   },
   [style.face.left]: {
-    [style.face.back]: keyframes`
-    0% {
-      transform: rotateY(90deg);
-    }
-    100% {
-      transform: rotateY(180deg);
-    }
-    `,
-    [style.face.front]: keyframes`
-    0% {
-      transform: rotateY(90deg);
-    }
-    100% {
-      transform: rotateY(0deg);
-    }
-    `
+    [style.face.back]: keyframes({
+      '0%': {
+        transform: 'rotateY(90deg)'
+      },
+      '100%': {
+        transform: 'rotateY(180deg)'
+      }
+    }),
+    [style.face.front]: keyframes({
+      '0%': {
+        transform: 'rotateY(90deg)'
+      },
+      '100%': {
+        transform: 'rotateY(0deg)'
+      }
+    })
   },
   [style.face.back]: {
-    [style.face.right]: keyframes`
-    0% {
-      transform: rotateY(180deg);
-    }
-    100% {
-      transform: rotateY(270deg);
-    }
-    `,
-    [style.face.left]: keyframes`
-    0% {
-      transform: rotateY(180deg);
-    }
-    100% {
-      transform: rotateY(90deg);
-    }
-    `
+    [style.face.right]: keyframes({
+      '0%': {
+        transform: 'rotateY(180deg)'
+      },
+      '100%': {
+        transform: 'rotateY(270deg)'
+      }
+    }),
+    [style.face.left]: keyframes({
+      '0%': {
+        transform: 'rotateY(180deg)'
+      },
+      '100%': {
+        transform: 'rotateY(90deg)'
+      }
+    })
   },
   [style.face.right]: {
-    [style.face.front]: keyframes`
-    0% {
-      transform: rotateY(-90deg);
-    }
-    100% {
-      transform: rotateY(0deg);
-    }
-    `,
-    [style.face.back]: keyframes`
-    0% {
-      transform: rotateY(270deg);
-    }
-    100% {
-      transform: rotateY(180deg);
-    }
-    `
+    [style.face.front]: keyframes({
+      '0%': {
+        transform: 'rotateY(-90deg)'
+      },
+      '100%': {
+        transform: 'rotateY(0deg)'
+      }
+    }),
+    [style.face.back]: keyframes({
+      '0%': {
+        transform: 'rotateY(270deg)'
+      },
+      '100%': {
+        transform: 'rotateY(180deg)'
+      }
+    })
   },
   shadow: {
-    left: keyframes`
-    0% {
-      transform: translateY(50px) rotateX(-90deg) rotateZ(0deg) scale(0.3);
+    left: keyframes({
+      '0%': {
+        transform: 'rotateZ(0deg)'
+      },
+      '100%': {
+        transform: 'rotateZ(90deg)'
+      }
+    }),
+    right: keyframes({
+      '0%': {
+        transform: 'rotateZ(0deg)'
+      },
+      '100%': {
+        transform: 'rotateZ(-90deg)'
+      }
+    })
+  },
+  description: {
+    left: {
+      in: keyframes({
+        '0%': {
+          opacity: '0',
+          left: '-100%'
+        },
+        '100%': {
+          opacity: '1',
+          left: '0%'
+        }
+      }),
+      out: keyframes({
+        '0%': {
+          opacity: '1',
+          left: '0%'
+        },
+        '100%': {
+          opacity: '0',
+          left: '100%'
+        }
+      }),
+    },
+    right: {
+      in: keyframes({
+        '0%': {
+          opacity: '0',
+          left: '100%'
+        },
+        '100%': {
+          opacity: '1',
+          left: '0%'
+        }
+      }),
+      out: keyframes({
+        '0%': {
+          opacity: '1',
+          left: '0%'
+        },
+        '100%': {
+          opacity: '0',
+          left: '-100%'
+        }
+      }),
     }
-    100% {
-      transform: translateY(50px) rotateX(-90deg) rotateZ(90deg) scale(0.3);
-    }
-    `,
-    right: keyframes`
-    0% {
-      transform: translateY(50px) rotateX(-90deg) rotateZ(0deg) scale(0.3);
-    }
-    100% {
-      transform: translateY(50px) rotateX(-90deg) rotateZ(-90deg) scale(0.3);
-    }
-    `
   }
 }
 
@@ -211,6 +296,7 @@ export default class View extends EventEmitter {
 
     this.model = {
       urls: [],
+      descriptions: [],
       cursor: 0,
       direction: "left"
     }
@@ -232,26 +318,27 @@ export default class View extends EventEmitter {
   }
 
   private resize() {
-    const cubeElements = this.element.getElementsByClassName(style.base);
+    const cubeElements = this.element.getElementsByClassName(style.cube);
     Array.from(cubeElements).forEach((cubeElement: HTMLElement) => {
       const { clientWidth, clientHeight } = cubeElement;
       const size = Math.min(clientWidth, clientHeight);
       const faceElements = cubeElement.getElementsByClassName(style.face.common);
       Array.from(faceElements).forEach((faceElement: HTMLElement) => {
-        faceElement.style.width = `${size}px`;
-        faceElement.style.height = `${size}px`;
-        faceElement.style.transformOrigin = `50% 50% -${size/2}px`;
         faceElement.style.transformOrigin = `50% 50% -${size/2}px`;
         faceElement.style.boxShadow = `rgba(0, 0, 0, 0.35) 0px -${size/10}px ${size/10}px -${size/10}px inset`;
       });
 
-      const shadowElements = cubeElement.getElementsByClassName(style.shadow);
+      const shadowHolderElements = cubeElement.getElementsByClassName(style.shadow.holder);
+      Array.from(shadowHolderElements).forEach((shadowHolderElement: HTMLElement) => {
+        shadowHolderElement.style.width = `${size}px`;
+        shadowHolderElement.style.height = `${size}px`;
+        shadowHolderElement.style.transformOrigin = `50% 50% -${size/2}px`;
+        shadowHolderElement.style.transform = `translateY(${size/20}px) rotateX(-90deg)`;
+      });
+
+      const shadowElements = cubeElement.getElementsByClassName(style.shadow.item);
       Array.from(shadowElements).forEach((shadowElement: HTMLElement) => {
-        shadowElement.style.width = `${size}px`;
-        shadowElement.style.height = `${size}px`;
-        shadowElement.style.transformOrigin = `50% 50% -${size/2}px`;
-        shadowElement.style.transformOrigin = `50% 50% -${size/2}px`;
-        shadowElement.style.boxShadow = `0px 0px ${size}px ${size}px black`;
+        shadowElement.style.boxShadow = `0px 0px ${size/4}px ${size/3}px black`;
       });
     });
   }
@@ -259,19 +346,27 @@ export default class View extends EventEmitter {
   private init() {
     this.element.innerHTML = `
     <div class="${style.wrapper}">
-    <div class="${style.base}">
+    <div class="${style.cube}">
     <div class="${style.face.common} ${style.face.front}"></div>
     <div class="${style.face.common} ${style.face.left}"></div>
     <div class="${style.face.common} ${style.face.right}"></div>
     <div class="${style.face.common} ${style.face.back}"></div>
-    <div class="${style.shadow}"></div>
+    <div class="${style.shadow.holder}">
+    <div class="${style.shadow.item}"></div>
     </div>
+    </div>
+    <div class="${style.shadow.gap}"></div>
     <ul id="${this.elementId}-cube-viewer-nav" class="${style.nav.base}"></ul>
+    <div class="${style.description.holder}">
+      <div class="${style.description.item}"></div>
+      <div class="${style.description.item}"></div>
+    </div>
     </div>
     `
   }
 
   public update(model: Model) {
+
     // 1. Update navigation bar
     const navNeedsUdate = this.model.urls.toString() !== model.urls.toString();
     if (navNeedsUdate) {
@@ -284,7 +379,10 @@ export default class View extends EventEmitter {
       this.move(model);
     }
 
-    // 3. Update selected navigation item
+    // 3. Update description text
+    this.updateDescription(model);
+
+    // 4. Update selected navigation item
     model.urls.forEach((url: string, id: number) => {
       const item = this.navItems[url];
       item.classList.remove(style.nav.selected)
@@ -293,13 +391,37 @@ export default class View extends EventEmitter {
       }
     });
 
-    // 4. Update image
+    // 5. Update image
     const fronts = this.element.getElementsByClassName(style.face.front);
     Array.from(fronts).forEach((face: HTMLElement) => {
       this.updateBackgroundImage(face, model.urls[model.cursor]);
     });
 
     this.model = model;
+  }
+
+  private updateDescription(model: Model) {
+    const text = model.descriptions[model.cursor];
+    const descriptions: HTMLElement[] = Array.from(
+      this.element.getElementsByClassName(style.description.item)
+    ) as HTMLElement[];
+
+    if (this.model.cursor == model.cursor) {
+      descriptions[0].innerHTML = model.descriptions[model.cursor];
+      return;
+    }
+
+    // out element
+    descriptions[1].innerHTML = this.model.descriptions[this.model.cursor];
+    descriptions[1].style.animationName = "none";
+    descriptions[1].offsetHeight;
+    descriptions[1].style.animationName = animations.description[model.direction].out;
+
+    // in element
+    descriptions[0].innerHTML = model.descriptions[model.cursor];
+    descriptions[0].style.animationName = "none";
+    descriptions[0].offsetHeight;
+    descriptions[0].style.animationName = animations.description[model.direction].in;
   }
 
   private updateNav(model: Model) {
@@ -344,7 +466,7 @@ export default class View extends EventEmitter {
   }
 
   private moveShadow(model: Model) {
-    const shadows = this.element.getElementsByClassName(style.shadow);
+    const shadows = this.element.getElementsByClassName(style.shadow.item);
     Array.from(shadows).forEach((shadow: HTMLElement) => {
       shadow.style.animationName = "none";
       shadow.offsetHeight;
