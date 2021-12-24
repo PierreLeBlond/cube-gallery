@@ -9,6 +9,7 @@ const style: any = {
     flexDirection: 'column',
     flexWrap: 'nowrap',
     alignItems: 'center',
+    justifyContent: 'center',
     height: '100%',
     width: '100%',
     perspectiveOrigin: '50% 50%',
@@ -117,10 +118,9 @@ const style: any = {
       paddingTop: '20px'
     }),
     item: css({
-      textAlign: 'center',
+      textIndent: '10px',
       width: '100%',
       position: 'absolute',
-      // whiteSpace: 'nowrap',
       animationDuration: '1s',
       animationFillMode: 'forwards'
     })
@@ -325,7 +325,7 @@ export default class View extends EventEmitter {
       const faceElements = cubeElement.getElementsByClassName(style.face.common);
       Array.from(faceElements).forEach((faceElement: HTMLElement) => {
         faceElement.style.transformOrigin = `50% 50% -${size/2}px`;
-        faceElement.style.boxShadow = `rgba(0, 0, 0, 0.35) 0px -${size/10}px ${size/10}px -${size/10}px inset`;
+        faceElement.style.boxShadow = `rgba(0, 0, 0, 0.35) 0px 0px ${size/10}px ${size/20}px inset`;
       });
 
       const shadowHolderElements = cubeElement.getElementsByClassName(style.shadow.holder);
@@ -358,8 +358,8 @@ export default class View extends EventEmitter {
     <div class="${style.shadow.gap}"></div>
     <ul id="${this.elementId}-cube-viewer-nav" class="${style.nav.base}"></ul>
     <div class="${style.description.holder}">
-      <div class="${style.description.item}"></div>
-      <div class="${style.description.item}"></div>
+      <p class="${style.description.item}"></p>
+      <p class="${style.description.item}"></p>
     </div>
     </div>
     `
