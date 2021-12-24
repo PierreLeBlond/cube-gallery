@@ -14,8 +14,8 @@ export default class Gallery {
   private keyPressedMap: any = {
     KeyH: "left",
     KeyL: "right",
-    '37': "left",
-    '39': "right"
+    ArrowLeft: "left",
+    ArrowRight: "right"
   };
 
   public constructor(elementId: string) {
