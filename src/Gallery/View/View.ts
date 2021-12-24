@@ -119,6 +119,7 @@ const style: any = {
     }),
     item: css({
       textIndent: '10px',
+      textAlign: 'center',
       width: '100%',
       position: 'absolute',
       animationDuration: '1s',
