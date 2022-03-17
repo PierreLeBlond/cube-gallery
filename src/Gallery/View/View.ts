@@ -43,9 +43,9 @@ const style: any = {
     width: '70%',
     aspectRatio: '1',
     transformStyle: 'preserve-3d',
-    transform: 'translateZ(-400px) rotateY(0deg)',
-    transition: 'transform 1s'
+    transform: 'translateZ(-400px) rotateY(0deg)'
   }),
+  animatable: css({transition: 'transform 1s'}),
   face: {
     common: css({
       position: 'absolute',
@@ -116,7 +116,7 @@ const style: any = {
       }
     }),
     item: css({transition: 'color 1s ease', '&:hover': {cursor: 'pointer'}}),
-    link: css({color: '#FFF', '&:hover': {color: '#2E93FF'}}),
+    link: css({color: '#FFF'}),
     selected: css({'a': {color: '#2E93FF'}})
   },
   description: {
@@ -179,12 +179,13 @@ const animations: any = {
 export default class View extends EventEmitter {
   private model: Model;
   private elementId: string;
-  private element: HTMLElement;
+  public element: HTMLElement;
 
   private urlResolvers: {[url: string]: Promise<string>} = {};
 
   private navItems: {[url: string]: HTMLElement} = {};
 
+  private anchorAngle = 0;
   private angle = 0;
   private distance = 0;
 
@@ -216,6 +217,29 @@ export default class View extends EventEmitter {
 
     window.addEventListener('resize', () => this.resize(), false);
     this.resize();
+  }
+
+  public preventAnimations() {
+    const cubeElement =
+        this.element.getElementsByClassName(style.cube)[0] as HTMLElement;
+    cubeElement.classList.remove(style.animatable);
+  }
+
+  public allowAnimations() {
+    const cubeElement =
+        this.element.getElementsByClassName(style.cube)[0] as HTMLElement;
+    cubeElement.classList.add(style.animatable);
+  }
+
+  public drag(offset: number) {
+    const width = this.element.clientWidth;
+    this.angle = this.anchorAngle + (offset / width) * 90.0;
+    this.updateCube();
+  }
+
+  public release() {
+    this.angle = this.anchorAngle;
+    this.updateCube();
   }
 
   private resize() {
@@ -258,7 +282,7 @@ export default class View extends EventEmitter {
   private init() {
     this.element.innerHTML = `
     <div class="${style.wrapper}">
-    <div class="${style.cube}">
+    <div class="${style.cube} ${style.animatable}">
     <div class="${style.face.common} ${style.face.front} ${
         style.face.current}"></div>
     <div class="${style.face.common} ${style.face.left}"></div>
@@ -400,7 +424,8 @@ export default class View extends EventEmitter {
   }
 
   private move(model: Model) {
-    this.angle -= this.currentDirection * 90;
+    this.anchorAngle -= this.currentDirection * 90;
+    this.angle = this.anchorAngle;
   }
 
   private updateBackgroundImage(element: HTMLElement, url: string) {
