@@ -9,12 +9,7 @@ module.exports = {
 
   module: {
     rules: [
-      {
-        test: /\.(ts)$/,
-        use: 'ts-loader',
-        exclude: /node_modules/
-      }
-      ,
+      {test: /\.(ts)$/, use: 'ts-loader', exclude: /node_modules/},
       {
         test: /\.(png|jpg|gif)$/i,
         use: [
@@ -29,12 +24,11 @@ module.exports = {
     ],
   },
 
-  resolve: {
-    extensions: ['*', '.ts', '.js']
-  },
+  resolve: {extensions: ['*', '.ts', '.js']},
 
   output: {
     path: path.resolve(__dirname, '../dist'),
+    publicPath: config.publicPath,
     filename: 'main.js',
     clean: true
   },

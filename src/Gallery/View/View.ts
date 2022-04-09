@@ -102,12 +102,12 @@ const style: any = {
     base: css({
       display: 'flex',
       justifyContent: 'center',
-      alignItems: 'start',
+      alignItems: 'center',
       position: 'relative',
       width: '90%',
-      height: '10%',
-      listStyleType: 'none',
       padding: '0px',
+      height: '15%',
+      listStyleType: 'none',
       marginBottom: '0%',
       li: {
         textDecoration: 'none',
@@ -115,9 +115,12 @@ const style: any = {
         paddingRight: '5px',
       }
     }),
-    item: css({transition: 'color 1s ease', '&:hover': {cursor: 'pointer'}}),
-    link: css({color: '#FFF'}),
-    selected: css({'a': {color: '#2E93FF'}})
+    item: css({
+      '&:hover': {cursor: 'pointer'},
+      'a svg': {transform: 'scale(0.8)', transition: 'transform 0.3s ease'}
+    }),
+    link: css({}),
+    selected: css({'a svg': {transform: 'scale(1.3)'}})
   },
   description: {
     holder: css({
@@ -125,7 +128,8 @@ const style: any = {
       alignItems: 'center',
       position: 'relative',
       width: '90%',
-      height: '20%'
+      paddingTop: '5%',
+      height: '10%'
     }),
     item: css({
       textIndent: '10px',

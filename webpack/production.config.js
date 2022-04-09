@@ -1,3 +1,4 @@
 module.exports = {
-  mode : "production",
+  mode: 'production',
+  publicPath: 'https://app.pierrelespingal.com/cube-gallery/'
 };
