@@ -34,14 +34,20 @@ const style: any = {
     perspective: '100vh',
     perspectiveOrigin: '50% 50%',
   }),
+  cubewrapper: css({
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
+    transformStyle: 'preserve-3d',
+    width: '100%',
+    height: '70%'
+  }),
   cube: css({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'end',
     position: 'relative',
-    maxHeight: '70%',
-    width: '70%',
-    aspectRatio: '1',
     transformStyle: 'preserve-3d',
     transform: 'translateZ(-400px) rotateY(0deg)'
   }),
@@ -93,7 +99,6 @@ const style: any = {
       justifyContent: 'center',
       transformOrigin: '50% 50% -200px',
       animationDuration: '1s',
-      // transform: 'translateY(50px) rotateX(-90deg) scale(0.3)',
       boxShadow: '0px 0px 500px 500px black',
       backgroundColor: 'black'
     })
@@ -111,8 +116,8 @@ const style: any = {
       marginBottom: '0%',
       li: {
         textDecoration: 'none',
-        paddingLeft: '5px',
-        paddingRight: '5px',
+        paddingLeft: '10px',
+        paddingRight: '10px',
       }
     }),
     item: css({
@@ -136,6 +141,7 @@ const style: any = {
       textAlign: 'center',
       width: '100%',
       position: 'absolute',
+      top: '40%',
       animationDuration: '1s',
       animationFillMode: 'forwards',
       margin: 0,
@@ -247,37 +253,43 @@ export default class View extends EventEmitter {
   }
 
   private resize() {
-    const cubeElement =
-        this.element.getElementsByClassName(style.cube)[0] as HTMLElement;
-    const {clientWidth, clientHeight} = cubeElement;
+    const wrapperElement = this.element.getElementsByClassName(
+                               style.cubewrapper)[0] as HTMLElement;
+    const {clientWidth, clientHeight} = wrapperElement;
     const size = Math.min(clientWidth, clientHeight);
 
-    this.distance = size / 2;
+    const faceSize = size * 0.9;
+
+    const cubeElement =
+        this.element.getElementsByClassName(style.cube)[0] as HTMLElement;
+    cubeElement.style.width = `${faceSize}px`;
+    cubeElement.style.height = `${faceSize}px`;
+    this.distance = faceSize / 2;
 
     orientations.forEach((orientation: string) => {
       const faceElement = this.element.getElementsByClassName(
                               style.face[orientation])[0] as HTMLElement;
       faceElement.style.transform = `rotateY(${
           rotations[orientation]}deg) translate3d(0, 0, ${this.distance}px)`;
-      faceElement.style.boxShadow =
-          `rgba(0, 0, 0, 0.35) 0px 0px ${size / 10}px ${size / 20}px inset`;
+      faceElement.style.boxShadow = `rgba(0, 0, 0, 0.10) 0px 0px ${
+          faceSize / 20}px ${faceSize / 30}px inset`;
     });
 
     const shadowHolderElements =
         cubeElement.getElementsByClassName(style.shadow.holder);
     Array.from(shadowHolderElements)
         .forEach((shadowHolderElement: HTMLElement) => {
-          shadowHolderElement.style.width = `${size}px`;
-          shadowHolderElement.style.height = `${size}px`;
+          shadowHolderElement.style.width = `${faceSize}px`;
+          shadowHolderElement.style.height = `${faceSize}px`;
           shadowHolderElement.style.transform =
-              `translateY(${this.distance + size / 30}px) rotateX(-90deg)`;
+              `translateY(${this.distance + faceSize / 30}px) rotateX(-90deg)`;
         });
 
     const shadowElements =
         cubeElement.getElementsByClassName(style.shadow.item);
     Array.from(shadowElements).forEach((shadowElement: HTMLElement) => {
       shadowElement.style.boxShadow =
-          `0px 0px ${size / 4}px ${size / 3}px black`;
+          `0px 0px ${faceSize / 4}px ${faceSize / 3}px black`;
     });
 
     this.updateCube();
@@ -286,6 +298,7 @@ export default class View extends EventEmitter {
   private init() {
     this.element.innerHTML = `
     <div class="${style.wrapper}">
+    <div class="${style.cubewrapper}">
     <div class="${style.cube} ${style.animatable}">
     <div class="${style.face.common} ${style.face.front} ${
         style.face.current}"></div>
@@ -294,6 +307,7 @@ export default class View extends EventEmitter {
     <div class="${style.face.common} ${style.face.back}"></div>
     <div class="${style.shadow.holder}">
     <div class="${style.shadow.item}"></div>
+    </div>
     </div>
     </div>
     <div class="${style.description.holder}">
@@ -373,8 +387,8 @@ export default class View extends EventEmitter {
         itemLink.classList.add(style.nav.link);
         item.appendChild(itemLink);
         itemLink.innerHTML = `
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box" viewBox="0 0 16 16">
-          <path d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5 8 5.961 14.154 3.5 8.186 1.113zM15 4.239l-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z"/>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-circle-fill" viewBox="0 0 16 16">
+           <circle cx="8" cy="8" r="8"/>
         </svg>
         `;
         item.classList.add(style.nav.item);
